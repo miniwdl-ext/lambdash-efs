@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # See also: http://alestic.com/2014/11/aws-lambda-shell
 #
@@ -6,14 +6,14 @@
 #   export LAMBDASH_FUNCTION=[FUNCTIONNAME]
 #   lambdash [SHELLCOMMAND]
 # 
-from __future__ import print_function
-import boto3, json, sys, os, base64
+import boto3, json, sys, os, base64, shlex
 
-client = boto3.client('lambda', region_name='us-east-1')
-response = client.invoke(
+command = ' '.join(shlex.quote(arg) for arg in sys.argv[1:])
+
+response = boto3.client('lambda').invoke(
     InvocationType='RequestResponse',
     FunctionName=os.environ.get('LAMBDASH_FUNCTION') or 'lambdash',
-    Payload='{"command":'+json.dumps(" ".join(sys.argv[1:]))+'}')
+    Payload=json.dumps({'command': command}))
 result = json.load(response['Payload'])
 
 os.write(sys.stdout.fileno(), base64.b64decode(result['stdout']))
