@@ -1,16 +1,16 @@
 # lambdash-efs
 
-This is a fork of [lambdash by Eric Hammond](https://alestic.com/2015/06/aws-lambda-shell-2/), an AWS Lambda function that simply runs a shell command inside the Lambda runtime environment and returns its standard output & error; accompanied by a local command-line invocation helper.
+This is a fork of [lambdash by Eric Hammond](https://alestic.com/2015/06/aws-lambda-shell-2/), an AWS Lambda function that simply runs a shell command inside the Lambda runtime and returns its standard output & error; accompanied by a local command-line invocation helper.
 
-We've modernized it to deploy using [Terraform](https://www.terraform.io/), and also to make the [Lambda function mount an existing EFS file system](https://docs.aws.amazon.com/lambda/latest/dg/services-efs.html) at `/mnt/efs`. This provides a *serverless* facility to browse & manage EFS contents; filling a gap that exists while AWS Console has no EFS contents browser, CloudShell can't mount EFS, etc.
+We've modernized it to deploy using [Terraform](https://www.terraform.io/), and to make the [Lambda function mount an existing EFS file system](https://docs.aws.amazon.com/lambda/latest/dg/services-efs.html) at `/mnt/efs`. This provides a *serverless* facility to browse & manage EFSs contents, whenever needed at negligible cost; filling a gap that exists while AWS Console lacks a browser for EFS contents, CloudShell can't mount EFS, etc.
 
 ### How to
 
 Requirements:
 
-* Local console configured with administrator credentials for your AWS account
+* Local terminal with administrator credentials for your AWS account
 * git, terraform, python3, boto3
-* Existing EFS file system, specifically:
+* Existing EFS file system, and specifically:
   * EFS Access Point (`fsap-xxxx`)
   * VPC subnet (`subnet-xxxx`) that can reach the EFS
   * Security Group (`sg-xxxx`) that can reach the EFS
@@ -41,7 +41,7 @@ And naturally you may copy the `lambdash` script somewhere in your PATH.
 
 ### Limits
 
-The Lambda function is configured with 256 MiB of memory and a 60-second timeout. The command's stdout & stderr are truncated at 64 MiB each.
+The Lambda function is configured with 256 MiB memory and 60-second timeout. The command's stdout & stderr are truncated at 64 MiB each.
 
 ### Alternatives
 
