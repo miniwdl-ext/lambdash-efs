@@ -2,7 +2,7 @@
 
 This is a fork of [lambdash by Eric Hammond](https://alestic.com/2015/06/aws-lambda-shell-2/), an AWS Lambda function that simply runs a shell command inside the Lambda runtime and returns its standard output & error; accompanied by a local command-line invocation helper.
 
-We've modernized it to deploy using [Terraform](https://www.terraform.io/), and to make the [Lambda function mount an existing EFS file system](https://docs.aws.amazon.com/lambda/latest/dg/services-efs.html) at `/mnt/efs`. This provides a *serverless* facility to browse & manage EFSs contents, whenever needed at negligible cost; filling a gap that exists while AWS Console lacks a browser for EFS contents, CloudShell can't mount EFS, etc.
+We've modernized it to deploy using [Terraform](https://www.terraform.io/), and to make the [Lambda function mount an existing EFS file system](https://docs.aws.amazon.com/lambda/latest/dg/services-efs.html) at `/mnt/efs`. This provides a *serverless* facility to browse & manage EFS contents, at negligible cost whenever needed; filling a gap that exists while AWS Console lacks a browser for EFS contents, CloudShell can't mount EFS, etc.
 
 ### How to
 
