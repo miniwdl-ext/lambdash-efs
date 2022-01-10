@@ -52,7 +52,7 @@ resource "aws_lambda_function" "lambdash_efs" {
 }
 
 resource "aws_iam_role" "lambdash_efs_role" {
-  name = "iam_for_lambda_tf"
+  name = "lambdash_efs"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
