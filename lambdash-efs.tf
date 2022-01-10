@@ -6,21 +6,23 @@ variable "function_name" {
   default = "lambdash"
 }
 
-variable "fsap_arn" {
-  description = "EFS Access Point ARN"
+variable "fsap" {
+  description = "EFS Access Point (fsap-xxxx)"
 }
 
-variable "subnet_id" {
-  description = "subnet ID with reachable EFS mount target"
+variable "subnet" {
+  description = "subnet with reachable EFS mount target (subnet-xxxx)"
 }
 
-variable "security_group_id" {
-  description = "security group ID with reachable EFS mount target"
+variable "sg" {
+  description = "security group with reachable EFS mount target (sg-xxxx)"
 }
 
 provider "aws" {
   region = var.aws_region
 }
+
+data "aws_caller_identity" "current" {}
 
 data "archive_file" "lambda_zip" {
   type        = "zip"
@@ -39,13 +41,13 @@ resource "aws_lambda_function" "lambdash_efs" {
   timeout          = 60
 
   file_system_config {
-    arn              = var.fsap_arn
+    arn              = "arn:aws:elasticfilesystem:${var.aws_region}:${data.aws_caller_identity.current.account_id}:access-point/${var.fsap}"
     local_mount_path = "/mnt/efs"
   }
 
   vpc_config {
-    subnet_ids         = [var.subnet_id]
-    security_group_ids = [var.security_group_id]
+    subnet_ids         = [var.subnet]
+    security_group_ids = [var.sg]
   }
 }
 
