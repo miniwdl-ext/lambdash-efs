@@ -8,9 +8,9 @@ We've modernized it to deploy using [Terraform](https://www.terraform.io/), and 
 
 Requirements:
 
-* Local terminal with administrator credentials for your AWS account
+* terminal session with [AWS CLI configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) (administrator/poweruser credentials and default region)
 * git, terraform, python3, boto3
-* Existing EFS file system, and specifically:
+* an EFS file system, and specifically:
   * EFS Access Point (`fsap-xxxx`)
   * VPC subnet (`subnet-xxxx`) that can reach the EFS
   * Security Group (`sg-xxxx`) that can reach the EFS
@@ -20,8 +20,8 @@ Deployment:
 ```bash
 git clone https://github.com/miniwdl-ext/lambdash-efs.git
 cd lambdash-efs
-terraform init
-terraform apply -var=aws_region=us-west-2 -var=fsap=fsap-xxxx -var=subnet=subnet-xxxx -var=sg=sg-xxxx
+terraform init -upgrade
+terraform apply -var=fsap=fsap-xxxx -var=subnet=subnet-xxxx -var=sg=sg-xxxx
 ```
 
 Example session:

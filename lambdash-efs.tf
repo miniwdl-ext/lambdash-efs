@@ -1,7 +1,3 @@
-variable "aws_region" {
-  default = "us-west-2"
-}
-
 variable "function_name" {
   default = "lambdash"
 }
@@ -18,11 +14,10 @@ variable "sg" {
   description = "security group with reachable EFS mount target (sg-xxxx)"
 }
 
-provider "aws" {
-  region = var.aws_region
-}
+provider "aws" {}
 
 data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
 data "archive_file" "lambda_zip" {
   type        = "zip"
@@ -41,7 +36,7 @@ resource "aws_lambda_function" "lambdash_efs" {
   timeout          = 60
 
   file_system_config {
-    arn              = "arn:aws:elasticfilesystem:${var.aws_region}:${data.aws_caller_identity.current.account_id}:access-point/${var.fsap}"
+    arn              = "arn:aws:elasticfilesystem:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:access-point/${var.fsap}"
     local_mount_path = "/mnt/efs"
   }
 
