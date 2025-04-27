@@ -19,7 +19,8 @@ exports.handler = function(event, context) {
     var execOptions = {
         encoding: 'binary',
         maxBuffer: MAX_OUTPUT,
-        shell: '/bin/bash'
+        shell: '/bin/bash',
+        cwd: '/mnt/efs'
     };
     exec(event.command, execOptions,
         function (error, stdout, stderr) {

@@ -31,7 +31,7 @@ resource "aws_lambda_function" "lambdash_efs" {
   role             = aws_iam_role.lambdash_efs_role.arn
   handler          = "index.handler"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  runtime          = "nodejs14.x"
+  runtime          = "nodejs18.x"
   memory_size      = 256
   timeout          = 60
 
@@ -62,9 +62,15 @@ resource "aws_iam_role" "lambdash_efs_role" {
       },
     ]
   })
+}
 
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole",
-    "arn:aws:iam::aws:policy/AmazonElasticFileSystemClientReadWriteAccess",
-  ]
+// Attach managed policies to the role via dedicated attachments
+resource "aws_iam_role_policy_attachment" "lambdash_vpc_access" {
+  role       = aws_iam_role.lambdash_efs_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "lambdash_efs_rw" {
+  role       = aws_iam_role.lambdash_efs_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonElasticFileSystemClientReadWriteAccess"
 }
